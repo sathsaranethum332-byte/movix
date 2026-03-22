@@ -39,7 +39,6 @@ nav{margin-top:-60px;display:flex;justify-content:space-between;align-items:cent
 .movie-buttons button:last-child{background:#444444;}
 .movie-card:hover{transform:scale(1.05);}
 
-
 /* ADS */
 .ads{position:fixed;top:0;left:0;width:100%;height:100vh;background:black;display:none;justify-content:center;align-items:center;z-index:300;}
 .ads video{width:70%;}
@@ -48,15 +47,12 @@ nav{margin-top:-60px;display:flex;justify-content:space-between;align-items:cent
 #allMoviesPage{display:none;padding:20px;margin-top:60px;}
 #allMoviesList{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:20px;}
 
-
 /* FOOTER */
-
 .footer{
 background:#000;
 margin-top:60px;
 padding:40px 20px 10px;
 }
-
 .footer-container{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
@@ -64,45 +60,36 @@ gap:30px;
 max-width:1200px;
 margin:auto;
 }
-
 .footer-col h3{
 margin-bottom:15px;
 color:red;
 }
-
 .footer-logo{
 color:red;
 margin-bottom:10px;
 }
-
 .footer-col p{
 color:#aaa;
 font-size:14px;
 }
-
 .footer-col ul{
 list-style:none;
 }
-
 .footer-col ul li{
 margin:8px 0;
 }
-
 .footer-col ul li a{
 color:#aaa;
 text-decoration:none;
 font-size:14px;
 }
-
 .footer-col ul li a:hover{
 color:white;
 }
-
 .socials{
 display:flex;
 gap:10px;
 }
-
 .socials a{
 background:#111;
 padding:10px;
@@ -111,11 +98,9 @@ text-decoration:none;
 font-size:18px;
 transition:0.3s;
 }
-
 .socials a:hover{
 background:red;
 }
-
 .footer-bottom{
 text-align:center;
 margin-top:30px;
@@ -125,9 +110,7 @@ color:#777;
 font-size:13px;
 }
 
-
 /* NETFLIX PLAYER */
-
 .player{
 position:fixed;
 top:0;
@@ -140,13 +123,11 @@ justify-content:center;
 align-items:center;
 z-index:500;
 }
-
 .player iframe{
 width:80%;
 height:80%;
 border:none;
 }
-
 .close-player{
 position:absolute;
 top:20px;
@@ -155,7 +136,6 @@ font-size:30px;
 cursor:pointer;
 color:white;
 }
-
 .preview{
 position:fixed;
 bottom:20px;
@@ -166,8 +146,6 @@ border-radius:10px;
 display:none;
 width:220px;
 }
-
-
 </style>
 </head>
 <body>
@@ -180,10 +158,9 @@ width:220px;
   <div id="loginArea">
     <button class="login-btn" onclick="login()">LOGIN MOVIX</button>
   </div>
-  <div class="profile" id="profile" style="display:none" onclick="toggleLogout()">
+  <div class="profile" id="profile" onclick="toggleLogout()">
     <img id="userPhoto">
     <button id="logoutBtn" style="display:none;margin-left:10px;padding:5px 10px;background:red;color:white;border:none;cursor:pointer;" onclick="logout(event)">Logout</button>
-  
   </div>
 </nav>
 
@@ -192,12 +169,11 @@ width:220px;
   <div class="banner-overlay"></div>
   <div style="position:relative; z-index:10;">
     <h1 id="bannerTitle">Avatar</h1>
-    <button onclick="window.open('${m.watchLink}','_blank')">Watch</button>
+    <button id="bannerWatchBtn">Watch</button>
     <button id="allMoviesBtn" onclick="openAllMovies()">All Movies</button>
-   
     <br><br><br>
-    <P>MovieFlix is a modern online platform offering a vast collection of trending, new, and recommended movies. Users can watch, download, and explore films seamlessly, with real-time updates, search filters, and a dynamic banner showcasing top picks. Contact support is available via WhatsApp for instant assistance.</P>
- <br><br><br>
+    <p>MovieFlix is a modern online platform offering a vast collection of trending, new, and recommended movies. Users can watch, download, and explore films seamlessly, with real-time updates, search filters, and a dynamic banner showcasing top picks. Contact support is available via WhatsApp for instant assistance.</p>
+    <br><br><br>
     <a href="https://wa.me/94741962754" target="_blank">
       <button id="contactBtn">Contact</button>
     </a>
@@ -227,7 +203,10 @@ width:220px;
 </div>
 
 <!-- PLAYER -->
-
+<div class="player" id="player">
+  <div class="close-player" onclick="closePlayer()">✖</div>
+  <iframe id="playerFrame"></iframe>
+</div>
 
 <div class="ads" id="ads">
   <video autoplay id="adsVideo">
@@ -236,52 +215,15 @@ width:220px;
 </div>
 
 <script>
-
-  // MOVIE PLAYER
-
-function playMovie(title,link){
-
-document.getElementById("player").style.display="flex";
-document.getElementById("playerFrame").src=link;
-
-}
-
-function closePlayer(){
-
-document.getElementById("player").style.display="none";
-document.getElementById("playerFrame").src="";
-
-}
-
-
-// AUTO BANNER
-
-let bannerIndex=0;
-
-setInterval(()=>{
-
-bannerIndex++;
-
-if(bannerIndex>=trendingMovies.length){
-bannerIndex=0;
-}
-
-setBanner(trendingMovies[bannerIndex]);
-
-},4000);
-  
-// Movie data
-
-
-const trendingMovies=[
+let trendingMovies=[
   {title:"Avatar", img:"https://image.tmdb.org/t/p/w500/t6HIqrRAclMCA60NsSmeqe9RmNV.jpg", stars:4.5, watchCount:1234, watchLink:"https://www.storyblocks.com/video/search/loading-animation", downloadLink:"https://www.profitablecpmratenetwork.com/kwnini4d?key=513147e8faabc8a56498b35610997b0c"},
   {title:"Inception", img:"https://image.tmdb.org/t/p/w500/qmDpIHrmpJINaRKAfWQfftjCdyi.jpg", stars:4.7, watchCount:2045, watchLink:"https://www.profitablecpmratenetwork.com/kwnini4d?key=513147e8faabc8a56498b35610997b0c", downloadLink:"https://www.profitablecpmratenetwork.com/kwnini4d?key=513147e8faabc8a56498b35610997b0c"},
   {title:"Joker", img:"https://image.tmdb.org/t/p/w500/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg", stars:4.6, watchCount:1750, watchLink:"https://www.profitablecpmratenetwork.com/kwnini4d?key=513147e8faabc8a56498b35610997b0c", downloadLink:"https://www.profitablecpmratenetwork.com/kwnini4d?key=513147e8faabc8a56498b35610997b0c"}
 ];
-const newMovies=[{title:"Dune", img:"https://image.tmdb.org/t/p/w500/8UlWHLMpgZm9bx6QYh0NFoq67TZ.jpg", stars:4.3, watchCount:980, watchLink:"https://www.profitablecpmratenetwork.com/kwnini4d?key=513147e8faabc8a56498b35610997b0c", downloadLink:"https://www.profitablecpmratenetwork.com/kwnini4d?key=513147e8faabc8a56498b35610997b0c"}];
 
+let newMovies=[{title:"Dune", img:"https://image.tmdb.org/t/p/w500/8UlWHLMpgZm9bx6QYh0NFoq67TZ.jpg", stars:4.3, watchCount:980, watchLink:"https://www.profitablecpmratenetwork.com/kwnini4d?key=513147e8faabc8a56498b35610997b0c", downloadLink:"https://www.profitablecpmratenetwork.com/kwnini4d?key=513147e8faabc8a56498b35610997b0c"}];
 
-const recommendedMovies=[{title:"Interstellar", img:"https://image.tmdb.org/t/p/w500/rAiYTfKGqDCRIIqo664sY9XZIvQ.jpg", stars:4.9, watchCount:3100, watchLink:"https://www.profitablecpmratenetwork.com/kwnini4d?key=513147e8faabc8a56498b35610997b0c", downloadLink:"https://www.profitablecpmratenetwork.com/kwnini4d?key=513147e8faabc8a56498b35610997b0c"}];
+let recommendedMovies=[{title:"Interstellar", img:"https://image.tmdb.org/t/p/w500/rAiYTfKGqDCRIIqo664sY9XZIvQ.jpg", stars:4.9, watchCount:3100, watchLink:"https://www.profitablecpmratenetwork.com/kwnini4d?key=513147e8faabc8a56498b35610997b0c", downloadLink:"https://www.profitablecpmratenetwork.com/kwnini4d?key=513147e8faabc8a56498b35610997b0c"}];
 
 const allMovies = [...trendingMovies,...newMovies,...recommendedMovies];
 
@@ -317,6 +259,14 @@ function setBanner(movie){
 }
 setBanner(trendingMovies[0]);
 
+// Auto Banner
+let bannerIndex=0;
+setInterval(()=>{
+  bannerIndex++;
+  if(bannerIndex>=trendingMovies.length) bannerIndex=0;
+  setBanner(trendingMovies[bannerIndex]);
+},4000);
+
 // All Movies
 function openAllMovies(){
   document.getElementById("allMoviesPage").style.display="block";
@@ -332,7 +282,6 @@ function openAllMovies(){
   window.scrollTo({top:0, behavior:"smooth"});
 }
 
-
 // Ads
 function showAds(){document.getElementById("ads").style.display="flex"; setTimeout(()=>{document.getElementById("ads").style.display="none"; alert("Download Started");},5000);}
 
@@ -344,18 +293,28 @@ document.getElementById("searchInput").addEventListener("input", function(){
     card.style.display = title.includes(filter) ? "inline-block" : "none";
   });
 });
+
+// Movie Player
+function playMovie(title,link){
+  document.getElementById("player").style.display="flex";
+  document.getElementById("playerFrame").src=link;
+}
+function closePlayer(){
+  document.getElementById("player").style.display="none";
+  document.getElementById("playerFrame").src="";
+}
 </script>
 
 <!-- Firebase Google Login -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth,GoogleAuthProvider,signInWithPopup,onAuthStateChanged,signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getAuth,GoogleAuthProvider,signInWithRedirect,onAuthStateChanged,signOut,getRedirectResult } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDrvl5wvpsfxaMbWkZjBo9n38RZbwChdng",
   authDomain: "cadet-team-kcc.firebaseapp.com",
   projectId: "cadet-team-kcc",
-  storageBucket: "cadet-team-kcc.firebasestorage.app",
+  storageBucket: "cadet-team-kcc.appspot.com",
   messagingSenderId: "418568958796",
   appId: "1:418568958796:web:2fe342b2c731541b5315e9",
   measurementId: "G-KE72JZTK2F"
@@ -367,7 +326,9 @@ const provider = new GoogleAuthProvider();
 
 // LOGIN
 window.login = async function(){
-  await signInWithPopup(auth,provider);
+  try{
+    await signInWithRedirect(auth,provider);
+  }catch(e){console.error(e);}
 }
 
 // LOGOUT BUTTON SHOW/HIDE
@@ -394,21 +355,19 @@ onAuthStateChanged(auth,(user)=>{
     document.getElementById("profile").style.display="none";
   }
 });
+
+// Mobile redirect result
+getRedirectResult(auth).then((result)=>{
+  if(result.user){
+    console.log("Login successful!", result.user);
+  }
+}).catch((error)=>{
+  console.error(error);
+});
 </script>
-
-<!-- MOVIE PLAYER -->
-<div class="player" id="player">
-  <div class="close-player" onclick="closePlayer()">✖</div>
-  <iframe id="playerFrame"></iframe>
-</div>
-
-
-<div id="preview" class="preview"></div>
-
 
 <footer class="footer">
   <div class="footer-container">
-
     <div class="footer-col">
       <h2 class="footer-logo">MOVIX</h2>
       <p>
@@ -416,7 +375,6 @@ onAuthStateChanged(auth,(user)=>{
         watch and download trending movies easily.
       </p>
     </div>
-
     <div class="footer-col">
       <h3>Navigation</h3>
       <ul>
@@ -426,7 +384,6 @@ onAuthStateChanged(auth,(user)=>{
         <li><a href="#" onclick="openAllMovies()">All Movies</a></li>
       </ul>
     </div>
-
     <div class="footer-col">
       <h3>Support</h3>
       <ul>
@@ -435,7 +392,6 @@ onAuthStateChanged(auth,(user)=>{
         <li><a href="#">Report Problem</a></li>
       </ul>
     </div>
-
     <div class="footer-col">
       <h3>Follow Us</h3>
       <div class="socials">
@@ -445,9 +401,7 @@ onAuthStateChanged(auth,(user)=>{
         <a href="#">▶️</a>
       </div>
     </div>
-
   </div>
-
   <div class="footer-bottom">
     © 2026 MovieFlix. All Rights Reserved.
   </div>
