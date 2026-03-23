@@ -8,229 +8,54 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 
 <style>
-
 *{margin:0;padding:0;box-sizing:border-box;font-family:Poppins}
-
-body{
-background:#0b0b0b;
-color:white;
-}
+body{background:#0b0b0b;color:white;}
 
 /* NAVBAR */
-
 nav{
-margin-top: -70px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:15px 30px;
-background:black;
-position:fixed;
-width:100%;
-z-index:100;
+  margin-top: -70px;
+display:flex;justify-content:space-between;align-items:center;padding:15px 30px;
+background:black;position:fixed;width:100%;z-index:100;
 }
-
-.logo{
-font-size:22px;
-font-weight:700;
-color:red;
-}
-
-#searchInput{
-padding:7px 12px;
-width:50%;
-border-radius:5px;
-border:none;
-outline:none;
-}
-
-.profile{
-display:none;
-align-items:center;
-gap:10px;
-cursor:pointer;
-position:relative;
-}
-
-.profile img{
-width:35px;
-height:35px;
-border-radius:50%;
-border:2px solid red;
-}
-
-.login-btn{
-background:red;
-border:none;
-padding:8px 14px;
-color:white;
-cursor:pointer;
-border-radius:10px;
-}
-
-#logoutBtn{
-display:none;
-position:absolute;
-top:45px;
-right:0;
-background:red;
-border:none;
-padding:6px 12px;
-color:white;
-border-radius:8px;
-cursor:pointer;
-}
+.logo{font-size:22px;font-weight:700;color:red;}
+#searchInput{padding:7px 12px;width:50%;border-radius:5px;border:none;outline:none;}
+.profile{display:none;align-items:center;gap:10px;cursor:pointer;position:relative;}
+.profile img{width:35px;height:35px;border-radius:50%;border:2px solid red;}
+.login-btn{background:red;border:none;padding:8px 14px;color:white;cursor:pointer;border-radius:10px;}
+#logoutBtn{display:none;position:absolute;top:45px;right:0;background:red;border:none;padding:6px 12px;color:white;border-radius:8px;cursor:pointer;}
 
 /* BANNER */
-
-.banner{
-margin-top:70px;
-height:65vh;
-background-size:cover;
-background-position:center;
-display:flex;
-align-items:center;
-padding:50px;
-position:relative;
-}
-
-.banner-overlay{
-position:absolute;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,0.6);
-}
-
-.banner h1{
-font-size:40px;
-}
-
-.banner button{
-margin-top:15px;
-padding:10px 20px;
-background:red;
-border:none;
-color:white;
-cursor:pointer;
-border-radius:20px;
-}
+.banner{margin-top:70px;height:65vh;background-size:cover;background-position:center;display:flex;align-items:center;padding:50px;position:relative;}
+.banner-overlay{position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);}
+.banner h1{font-size:40px;}
+.banner button{margin-top:15px;padding:10px 20px;background:red;border:none;color:white;cursor:pointer;border-radius:20px;}
 
 /* MOVIE ROW */
-
-.row{
-padding:20px;
-}
-
-.slider{
-display:flex;
-overflow-x:auto;
-gap:12px;
-}
-
-.slider::-webkit-scrollbar{
-display:none;
-}
-
-/* MOVIE CARD */
-
-.movie-card{
-min-width:180px;
-background:#111;
-border-radius:8px;
-overflow:hidden;
-text-align:center;
-transition:0.3s;
-cursor:pointer;
-}
-
-.movie-card img{
-width:100%;
-height:270px;
-object-fit:cover;
-}
-
-.movie-card h3{
-font-size:16px;
-padding:5px;
-}
-
-.movie-info{
-padding:5px;
-color:#ffd700;
-font-size:14px;
-}
-
-.movie-buttons{
-display:flex;
-justify-content:center;
-padding:10px;
-}
-
-.movie-buttons button{
-padding:6px 12px;
-border:none;
-background:red;
-color:white;
-border-radius:10px;
-cursor:pointer;
-}
-
-.movie-card:hover{
-transform:scale(1.05);
-}
+.row{padding:20px;}
+.slider{display:flex;overflow-x:auto;gap:12px;}
+.slider::-webkit-scrollbar{display:none;}
+.movie-card{min-width:180px;background:#111;border-radius:8px;overflow:hidden;text-align:center;transition:0.3s;cursor:pointer;}
+.movie-card img{width:100%;height:270px;object-fit:cover;}
+.movie-card h3{font-size:16px;padding:5px;}
+.movie-info{padding:5px;color:#ffd700;font-size:14px;}
+.movie-buttons{display:flex;justify-content:center;padding:10px;}
+.movie-buttons button{padding:6px 12px;border:none;background:red;color:white;border-radius:10px;cursor:pointer;}
+.movie-card:hover{transform:scale(1.05);}
 
 /* PLAYER */
-
-.player{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100vh;
-background:black;
-display:none;
-justify-content:center;
-align-items:center;
-z-index:500;
-}
-
-.player iframe{
-width:80%;
-height:80%;
-border:none;
-}
-
-.close-player{
-position:absolute;
-top:20px;
-right:30px;
-font-size:30px;
-cursor:pointer;
-}
+.player{position:fixed;top:0;left:0;width:100%;height:100vh;background:black;display:none;justify-content:center;align-items:center;z-index:500;}
+.player iframe{width:80%;height:80%;border:none;}
+.close-player{position:absolute;top:20px;right:30px;font-size:30px;cursor:pointer;}
 
 /* ALL MOVIES */
-
-#allMoviesPage{
-display:none;
-padding:20px;
-margin-top:60px;
-}
-
-#allMoviesList{
-display:grid;
-grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
-gap:20px;
-}
-
+#allMoviesPage{display:none;padding:20px;margin-top:60px;}
+#allMoviesList{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:20px;}
 </style>
 </head>
 
 <body>
 
 <nav>
-
 <div style="display:flex;gap:15px;align-items:center;">
 <div class="logo">MOVIX</div>
 <input type="text" id="searchInput" placeholder="Search movies...">
@@ -244,29 +69,19 @@ gap:20px;
 <img id="userPhoto">
 <button id="logoutBtn">Logout</button>
 </div>
-
 </nav>
 
 <!-- BANNER -->
-
 <div class="banner" id="banner">
-
 <div class="banner-overlay"></div>
-
 <div style="position:relative;z-index:5;">
-
 <h1 id="bannerTitle">Avatar</h1>
-
 <button id="bannerWatchBtn">Watch</button>
-
 <button onclick="openAllMovies()">All Movies</button>
-
 </div>
-
 </div>
 
 <!-- MOVIE ROWS -->
-
 <div class="row">
 <h2>Trending</h2>
 <div class="slider" id="trending"></div>
@@ -283,38 +98,20 @@ gap:20px;
 </div>
 
 <!-- ALL MOVIES -->
-
 <div id="allMoviesPage">
-
 <h2>All Movies</h2>
-
 <div id="allMoviesList"></div>
-
 </div>
 
 <!-- PLAYER -->
-
 <div class="player" id="player">
-
 <div class="close-player" onclick="closePlayer()">✖</div>
-
 <iframe id="playerFrame"></iframe>
-
 </div>
 
 <script type="module">
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-
-import {
-getAuth,
-GoogleAuthProvider,
-signInWithPopup,
-signInWithRedirect,
-getRedirectResult,
-onAuthStateChanged,
-signOut
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 const firebaseConfig = {
 apiKey:"AIzaSyDrvl5wvpsfxaMbWkZjBo9n38RZbwChdng",
@@ -329,139 +126,96 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth();
 const provider = new GoogleAuthProvider();
 
-/* LOGIN */
-
+// LOGIN
 async function login(){
-
-if(/Mobi|Android/i.test(navigator.userAgent)){
-
-await signInWithRedirect(auth,provider);
-
-}else{
-
-const result = await signInWithPopup(auth,provider);
-
-handleUser(result.user);
-
+  if(/Mobi|Android/i.test(navigator.userAgent)){
+    await signInWithRedirect(auth, provider);
+  } else {
+    const result = await signInWithPopup(auth, provider);
+    handleUser(result.user);
+  }
 }
+document.getElementById("loginBtn").addEventListener("click", login);
 
-}
-
-document.getElementById("loginBtn").addEventListener("click",login);
-
-/* HANDLE USER */
-
+// HANDLE USER
 function handleUser(user){
-
-if(user){
-
-document.getElementById("loginArea").style.display="none";
-
-document.getElementById("profile").style.display="flex";
-
-document.getElementById("userPhoto").src=user.photoURL;
-
-}else{
-
-document.getElementById("loginArea").style.display="block";
-
-document.getElementById("profile").style.display="none";
-
+  if(user){
+    document.getElementById("loginArea").style.display="none";
+    document.getElementById("profile").style.display="flex";
+    document.getElementById("userPhoto").src = user.photoURL;
+  } else {
+    document.getElementById("loginArea").style.display="block";
+    document.getElementById("profile").style.display="none";
+  }
 }
 
+// MOBILE REDIRECT RESULT FIX
+getRedirectResult(auth)
+.then(result => {
+  if(result?.user) handleUser(result.user);
+})
+.catch(err => console.error(err));
+
+// AUTH STATE
+onAuthStateChanged(auth, user => handleUser(user));
+
+// PROFILE CLICK
+document.getElementById("profile").onclick = function(e){
+  e.stopPropagation();
+  const btn = document.getElementById("logoutBtn");
+  btn.style.display = btn.style.display === "block" ? "none" : "block";
 }
 
-onAuthStateChanged(auth,handleUser);
-
-getRedirectResult(auth).then(result=>{
-if(result?.user) handleUser(result.user)
-});
-
-/* PROFILE CLICK */
-
-document.getElementById("profile").onclick=function(e){
-
-e.stopPropagation();
-
-const btn=document.getElementById("logoutBtn");
-
-btn.style.display=btn.style.display==="block"?"none":"block";
-
+// LOGOUT
+document.getElementById("logoutBtn").onclick = async function(e){
+  e.stopPropagation();
+  await signOut(auth);
+  location.reload();
 }
 
-/* LOGOUT */
-
-document.getElementById("logoutBtn").onclick=async function(e){
-
-e.stopPropagation();
-
-await signOut(auth);
-
-location.reload();
-
-}
-
-/* MOVIES */
-
-const movies=[
-
-{title:"Avatar",img:"https://image.tmdb.org/t/p/w500/t6HIqrRAclMCA60NsSmeqe9RmNV.jpg",link:"https://vidsrc.to/embed/movie/19995"},
-
-{title:"Inception",img:"https://image.tmdb.org/t/p/w500/qmDpIHrmpJINaRKAfWQfftjCdyi.jpg",link:"https://vidsrc.to/embed/movie/27205"},
-
-{title:"Interstellar",img:"https://image.tmdb.org/t/p/w500/rAiYTfKGqDCRIIqo664sY9XZIvQ.jpg",link:"https://vidsrc.to/embed/movie/157336"}
-
+// MOVIES DATA
+const trendingMovies = [
+{title:"Avatar", img:"https://image.tmdb.org/t/p/w500/t6HIqrRAclMCA60NsSmeqe9RmNV.jpg", link:"https://vidsrc.to/embed/movie/19995"},
+{title:"Inception", img:"https://image.tmdb.org/t/p/w500/qmDpIHrmpJINaRKAfWQfftjCdyi.jpg", link:"https://vidsrc.to/embed/movie/27205"},
+{title:"Interstellar", img:"https://image.tmdb.org/t/p/w500/rAiYTfKGqDCRIIqo664sY9XZIvQ.jpg", link:"https://vidsrc.to/embed/movie/157336"}
 ];
 
+// LOAD MOVIES
 function loadMovies(){
-
-const container=document.getElementById("trending");
-
-movies.forEach(m=>{
-
-const card=document.createElement("div");
-
-card.className="movie-card";
-
-card.innerHTML=`
-
-<img src="${m.img}">
-
-<h3>${m.title}</h3>
-
-<div class="movie-buttons">
-
-<button onclick="playMovie('${m.link}')">Watch</button>
-
-</div>
-
-`;
-
-container.appendChild(card);
-
-});
-
+  const container = document.getElementById("trending");
+  trendingMovies.forEach(m => {
+    const card = document.createElement("div");
+    card.className = "movie-card";
+    card.innerHTML = `
+      <img src="${m.img}">
+      <h3>${m.title}</h3>
+      <div class="movie-buttons">
+        <button onclick="playMovie('${m.link}')">Watch</button>
+      </div>
+    `;
+    container.appendChild(card);
+  });
 }
-
 loadMovies();
 
-/* PLAYER */
-
-window.playMovie=function(link){
-
-document.getElementById("player").style.display="flex";
-
-document.getElementById("playerFrame").src=link;
-
+// PLAYER
+window.playMovie = function(link){
+  document.getElementById("player").style.display = "flex";
+  document.getElementById("playerFrame").src = link;
+}
+window.closePlayer = function(){
+  document.getElementById("player").style.display = "none";
+  document.getElementById("playerFrame").src = "";
 }
 
-window.closePlayer=function(){
-
-document.getElementById("player").style.display="none";
-
-document.getElementById("playerFrame").src="";
-
-}
+// SEARCH
+document.getElementById("searchInput").addEventListener("input", function(){
+  const filter = this.value.toLowerCase();
+  document.querySelectorAll(".movie-card").forEach(card => {
+    const title = card.querySelector("h3").innerText.toLowerCase();
+    card.style.display = title.includes(filter) ? "inline-block" : "none";
+  });
+});
 
 </script>
 
