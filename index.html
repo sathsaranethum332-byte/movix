@@ -16,11 +16,32 @@ nav{
   padding:15px 30px;background:black;position:fixed;width:100%;z-index:100;
 }
 .logo{font-size:22px;font-weight:700;color:red;}
-#searchInput{padding:7px 12px;width:50%;border-radius:5px;border:none;outline:none;}
 .profile{display:none;align-items:center;gap:10px;cursor:pointer;position:relative;}
 .profile img{width:35px;height:35px;border-radius:50%;border:2px solid red;}
-.login-btn{background:red;border:none;padding:8px 14px;color:white;cursor:pointer;border-radius:10px;}
-#logoutBtn{display:none;position:absolute;top:45px;right:0;background:red;border:none;padding:6px 12px;color:white;border-radius:8px;cursor:pointer;}
+
+/* SIDEBAR */
+#profileSidebar{
+  position:fixed;top:0;right:-220px;width:220px;height:100vh;background:#111;transition:0.3s;
+  z-index:300;padding:20px;display:flex;flex-direction:column;gap:15px;
+}
+#profileSidebar.show{right:0;}
+#profileSidebar img{width:70px;height:70px;border-radius:50%;margin:auto;}
+#profileSidebar button{padding:8px 10px;border:none;background:red;color:white;border-radius:5px;cursor:pointer;}
+
+/* LOGIN POPUP */
+#loginPopup{
+  position:fixed;top:0;left:0;width:100%;height:100vh;background:rgba(0,0,0,0.7);
+  display:flex;justify-content:center;align-items:center;z-index:500;
+}
+#loginPopup .card{
+  background:#111;padding:30px;border-radius:10px;display:flex;flex-direction:column;gap:20px;width:300px;text-align:center;
+}
+#loginPopup .card button{
+  padding:10px 0;border:none;border-radius:8px;cursor:pointer;font-weight:600;
+}
+#loginPopup .google{background:#db4437;color:white;}
+#loginPopup .facebook{background:#3b5998;color:white;}
+#loginPopup .closePopup{position:absolute;top:20px;right:30px;font-size:25px;color:white;cursor:pointer;}
 
 /* BANNER */
 .banner{margin-top:70px;height:65vh;background-size:cover;background-position:center;display:flex;align-items:center;padding:50px;position:relative;transition:0.5s;color:white;}
@@ -33,13 +54,10 @@ nav{
 .row h2{margin-bottom:10px;cursor:pointer;}
 .slider{display:flex;overflow-x:auto;gap:12px;}
 .slider::-webkit-scrollbar{display:none;}
-
-/* MOVIE CARD */
 .movie-card{min-width:180px;background:#111;border-radius:8px;overflow:hidden;text-align:center;transition:0.3s;cursor:pointer;}
 .movie-card img{width:100%;height:270px;object-fit:cover;}
 .movie-card h3{font-size:16px;padding:5px;}
 .movie-info{padding:5px;color:#ffd700;font-size:14px;}
-.movie-info span{margin-left:5px;color:#aaa;font-size:12px;}
 .movie-buttons{display:flex;justify-content:center;padding:10px;}
 .movie-buttons button{padding:6px 12px;border:none;background:red;color:white;border-radius:10px;cursor:pointer;}
 .movie-card:hover{transform:scale(1.05);}
@@ -57,18 +75,27 @@ nav{
 <body>
 
 <nav>
-  <div style="display:flex;gap:15px;align-items:center;">
-    <div class="logo">MOVIX</div>
-    <input type="text" id="searchInput" placeholder="Search movies...">
-  </div>
-  <div id="loginArea">
-    <button class="login-btn" id="loginBtn">LOGIN MOVIX</button>
-  </div>
+  <div class="logo">MOVIX</div>
   <div class="profile" id="profile">
     <img id="userPhoto">
-    <button id="logoutBtn">Logout</button>
   </div>
 </nav>
+
+<!-- SIDEBAR -->
+<div id="profileSidebar">
+  <img id="sidebarPhoto">
+  <button id="sidebarLogoutBtn">Logout</button>
+</div>
+
+<!-- LOGIN POPUP -->
+<div id="loginPopup">
+  <div class="closePopup" onclick="closeLoginPopup()">✖</div>
+  <div class="card">
+    <h2>Login to MOVIX</h2>
+    <button class="google" id="googleLoginBtn">Login with Google</button>
+    <button class="facebook">Login with Facebook</button>
+  </div>
+</div>
 
 <!-- BANNER -->
 <div class="banner" id="banner">
@@ -108,7 +135,7 @@ nav{
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 // Firebase config
 const firebaseConfig = {
@@ -124,75 +151,21 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth();
 const provider = new GoogleAuthProvider();
 
-// LOGIN
-async function login(){
-  if(/Mobi|Android/i.test(navigator.userAgent)){
-    await signInWithRedirect(auth, provider);
-  } else {
-    const result = await signInWithPopup(auth, provider);
-    handleUser(result.user);
-  }
-}
-document.getElementById("loginBtn").addEventListener("click", login);
-
-// HANDLE USER UI
-function handleUser(user){
-  if(user){
-    document.getElementById("loginArea").style.display="none";
-    document.getElementById("profile").style.display="flex";
-    document.getElementById("userPhoto").src=user.photoURL;
-  } else {
-    document.getElementById("loginArea").style.display="block";
-    document.getElementById("profile").style.display="none";
-  }
-}
-
-// Mobile redirect fix
-getRedirectResult(auth).then(result=>{ if(result?.user) handleUser(result.user); }).catch(console.error);
-
-// Auth state
-onAuthStateChanged(auth, user => handleUser(user));
-
-// Profile click toggle logout
-document.getElementById("profile").onclick = function(e){
-  e.stopPropagation();
-  const btn = document.getElementById("logoutBtn");
-  btn.style.display = btn.style.display==="block"?"none":"block";
-}
-
-// Logout
-document.getElementById("logoutBtn").onclick = async function(e){
-  e.stopPropagation();
-  await signOut(auth);
-  location.reload();
-}
-
-// MOVIES DATA
-const trendingMovies=[
-{title:"Avatar", img:"https://image.tmdb.org/t/p/w500/t6HIqrRAclMCA60NsSmeqe9RmNV.jpg", link:"https://vidsrc.to/embed/movie/19995", stars:4.5},
-{title:"Inception", img:"https://image.tmdb.org/t/p/w500/qmDpIHrmpJINaRKAfWQfftjCdyi.jpg", link:"https://vidsrc.to/embed/movie/27205", stars:4.7}
-];
-const newMovies=[
-{title:"Dune", img:"https://image.tmdb.org/t/p/w500/8UlWHLMpgZm9bx6QYh0NFoq67TZ.jpg", link:"https://vidsrc.to/embed/movie/438631", stars:4.3}
-];
-const recommendedMovies=[
-{title:"Interstellar", img:"https://image.tmdb.org/t/p/w500/rAiYTfKGqDCRIIqo664sY9XZIvQ.jpg", link:"https://vidsrc.to/embed/movie/157336", stars:4.9}
-];
+// MOVIES
+const trendingMovies=[{title:"Avatar",img:"https://image.tmdb.org/t/p/w500/t6HIqrRAclMCA60NsSmeqe9RmNV.jpg",link:"https://vidsrc.to/embed/movie/19995",stars:4.5}];
+const newMovies=[{title:"Dune",img:"https://image.tmdb.org/t/p/w500/8UlWHLMpgZm9bx6QYh0NFoq67TZ.jpg",link:"https://vidsrc.to/embed/movie/438631",stars:4.3}];
+const recommendedMovies=[{title:"Interstellar",img:"https://image.tmdb.org/t/p/w500/rAiYTfKGqDCRIIqo664sY9XZIvQ.jpg",link:"https://vidsrc.to/embed/movie/157336",stars:4.9}];
 const allMovies=[...trendingMovies,...newMovies,...recommendedMovies];
 
-// LOAD MOVIES
 function loadMovies(movies,element){
-  const container=document.getElementById(element);
-  container.innerHTML="";
+  const container=document.getElementById(element); container.innerHTML="";
   movies.forEach(m=>{
-    const card=document.createElement("div");
-    card.className="movie-card";
+    const card=document.createElement("div"); card.className="movie-card";
     card.innerHTML=`
       <img src="${m.img}" alt="${m.title}">
       <h3>${m.title}</h3>
       <div class="movie-info">⭐ ${m.stars}</div>
-      <div class="movie-buttons"><button onclick="playMovie('${m.link}')">Watch</button></div>
-    `;
+      <div class="movie-buttons"><button onclick="playMovie('${m.link}')">Watch</button></div>`;
     container.appendChild(card);
   });
 }
@@ -200,7 +173,7 @@ loadMovies(trendingMovies,"trending");
 loadMovies(newMovies,"new");
 loadMovies(recommendedMovies,"recommended");
 
-// Banner slider
+// BANNER SLIDER
 let bannerIndex=0;
 function setBanner(movie){
   document.getElementById("banner").style.backgroundImage=`url('${movie.img}')`;
@@ -208,27 +181,19 @@ function setBanner(movie){
   document.getElementById("bannerWatchBtn").onclick=()=>playMovie(movie.link);
 }
 setBanner(trendingMovies[0]);
-setInterval(()=>{
-  bannerIndex++;
-  if(bannerIndex>=trendingMovies.length) bannerIndex=0;
-  setBanner(trendingMovies[bannerIndex]);
-},4000);
+setInterval(()=>{bannerIndex=(bannerIndex+1)%trendingMovies.length;setBanner(trendingMovies[bannerIndex]);},4000);
 
-// All movies page
+// ALL MOVIES PAGE
 function openAllMovies(){
-  const page=document.getElementById("allMoviesPage");
-  page.style.display="block";
-  const list=document.getElementById("allMoviesList");
-  list.innerHTML="";
+  const page=document.getElementById("allMoviesPage"); page.style.display="block";
+  const list=document.getElementById("allMoviesList"); list.innerHTML="";
   allMovies.forEach(m=>{
-    const card=document.createElement("div");
-    card.className="movie-card";
+    const card=document.createElement("div"); card.className="movie-card";
     card.innerHTML=`
       <img src="${m.img}" alt="${m.title}">
       <h3>${m.title}</h3>
       <div class="movie-info">⭐ ${m.stars}</div>
-      <div class="movie-buttons"><button onclick="playMovie('${m.link}')">Watch</button></div>
-    `;
+      <div class="movie-buttons"><button onclick="playMovie('${m.link}')">Watch</button></div>`;
     list.appendChild(card);
   });
   window.scrollTo({top:0,behavior:"smooth"});
@@ -244,6 +209,30 @@ window.closePlayer=function(){
   document.getElementById("playerFrame").src="";
 }
 
+// LOGIN POPUP
+const loginPopup=document.getElementById("loginPopup");
+function closeLoginPopup(){loginPopup.style.display="none";}
+
+// GOOGLE LOGIN
+document.getElementById("googleLoginBtn").onclick=async function(){
+  try{
+    const result=await signInWithPopup(auth,provider);
+    const user=result.user;
+    document.getElementById("userPhoto").src=user.photoURL;
+    document.getElementById("sidebarPhoto").src=user.photoURL;
+    document.querySelector(".profile").style.display="flex";
+    loginPopup.style.display="none";
+  } catch(err){console.error(err);}
+}
+
+// SIDEBAR
+document.getElementById("profile").onclick=function(){
+  document.getElementById("profileSidebar").classList.toggle("show");
+}
+document.getElementById("sidebarLogoutBtn").onclick=async function(){
+  await signOut(auth); location.reload();
+}
+
 // SEARCH
 document.getElementById("searchInput").addEventListener("input",function(){
   const filter=this.value.toLowerCase();
@@ -253,6 +242,5 @@ document.getElementById("searchInput").addEventListener("input",function(){
   });
 });
 </script>
-
 </body>
 </html>
