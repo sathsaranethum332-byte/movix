@@ -14,8 +14,8 @@ body{background:#0b0b0b;color:white;}
 /* NAVBAR */
 nav{
   margin-top: -70px;
-display:flex;justify-content:space-between;align-items:center;padding:15px 30px;
-background:black;position:fixed;width:100%;z-index:100;
+  display:flex;justify-content:space-between;align-items:center;padding:15px 30px;
+  background:black;position:fixed;width:100%;z-index:100;
 }
 .logo{font-size:22px;font-weight:700;color:red;}
 #searchInput{padding:7px 12px;width:50%;border-radius:5px;border:none;outline:none;}
@@ -137,7 +137,7 @@ async function login(){
 }
 document.getElementById("loginBtn").addEventListener("click", login);
 
-// HANDLE USER
+// HANDLE USER UI
 function handleUser(user){
   if(user){
     document.getElementById("loginArea").style.display="none";
@@ -149,17 +149,17 @@ function handleUser(user){
   }
 }
 
-// MOBILE REDIRECT RESULT FIX
+// MOBILE REDIRECT FIX
 getRedirectResult(auth)
 .then(result => {
   if(result?.user) handleUser(result.user);
 })
 .catch(err => console.error(err));
 
-// AUTH STATE
+// AUTH STATE CHANGE
 onAuthStateChanged(auth, user => handleUser(user));
 
-// PROFILE CLICK
+// PROFILE CLICK TOGGLE LOGOUT
 document.getElementById("profile").onclick = function(e){
   e.stopPropagation();
   const btn = document.getElementById("logoutBtn");
@@ -174,7 +174,7 @@ document.getElementById("logoutBtn").onclick = async function(e){
 }
 
 // MOVIES DATA
-const trendingMovies = [
+const movies = [
 {title:"Avatar", img:"https://image.tmdb.org/t/p/w500/t6HIqrRAclMCA60NsSmeqe9RmNV.jpg", link:"https://vidsrc.to/embed/movie/19995"},
 {title:"Inception", img:"https://image.tmdb.org/t/p/w500/qmDpIHrmpJINaRKAfWQfftjCdyi.jpg", link:"https://vidsrc.to/embed/movie/27205"},
 {title:"Interstellar", img:"https://image.tmdb.org/t/p/w500/rAiYTfKGqDCRIIqo664sY9XZIvQ.jpg", link:"https://vidsrc.to/embed/movie/157336"}
@@ -183,7 +183,7 @@ const trendingMovies = [
 // LOAD MOVIES
 function loadMovies(){
   const container = document.getElementById("trending");
-  trendingMovies.forEach(m => {
+  movies.forEach(m => {
     const card = document.createElement("div");
     card.className = "movie-card";
     card.innerHTML = `
@@ -216,7 +216,6 @@ document.getElementById("searchInput").addEventListener("input", function(){
     card.style.display = title.includes(filter) ? "inline-block" : "none";
   });
 });
-
 </script>
 
 </body>
