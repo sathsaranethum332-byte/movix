@@ -214,9 +214,9 @@ const TMDB_KEY = "e694a8c2eaa4e397ddd617df9896370f";
 const TMDB_URL = "https://api.themoviedb.org/3";
 
 let allMovies = [];
-let totalPages = 500; // testing small pages
+let totalPages = 200; // testing small pages
 let currentPage = 1;
-const moviesPerPage = 100;
+const moviesPerPage = 5000;
 
 // Auth
 auth.onAuthStateChanged(user => {
@@ -269,7 +269,7 @@ function populateYears(){
 
 // Load movies
 async function loadAllMovies(){
-  movieContainer.innerHTML="Loading 10000 movies...";
+  movieContainer.innerHTML="Loading All movies...";
   allMovies = [];
   for(let page=1; page<=totalPages; page++){
     const res = await fetch(`${TMDB_URL}/movie/popular?api_key=${TMDB_KEY}&language=en-US&page=${page}`);
